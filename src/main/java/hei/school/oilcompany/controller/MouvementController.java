@@ -3,16 +3,14 @@ package hei.school.oilcompany.controller;
 import hei.school.oilcompany.db.entity.Mouvement;
 import hei.school.oilcompany.service.MouvementService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/Mouvements")
 public class MouvementController {
+
     @Autowired
     MouvementService mouvementService;
 
@@ -25,5 +23,11 @@ public class MouvementController {
     public Mouvement getMouvementById(@PathVariable("id") String id) {
         return mouvementService.findById(id);
     }
+
+    @DeleteMapping("delete/{id}")
+    public Mouvement deleteStationById(@PathVariable("id") String id) { return mouvementService.delete(id); }
+
+    @PostMapping("saveMouvement")
+    public Mouvement saveMouvement(@RequestBody Mouvement mouvement) { return mouvementService.save(mouvement); }
 
 }

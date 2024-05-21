@@ -3,10 +3,7 @@ package hei.school.oilcompany.controller;
 import hei.school.oilcompany.db.entity.Product;
 import hei.school.oilcompany.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,7 +13,6 @@ public class ProductController {
 
     @Autowired
     ProductService productService;
-
 
     @GetMapping({"", "/"})
     public List<Product> getAllProduct() {
@@ -28,8 +24,10 @@ public class ProductController {
         return productService.findById(id);
     }
 
-    @GetMapping({"/ok"})
-    public String yes(){
-        return "successfuly";
-    }
+    @DeleteMapping("delete/{id}")
+    public Product deleteStationById(@PathVariable("id") String id) { return productService.delete(id); }
+
+    @PostMapping("/saveProduct")
+    public Product saveProduct(@RequestBody Product product) { return productService.save(product); }
+
 }

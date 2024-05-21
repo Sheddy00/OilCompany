@@ -3,15 +3,16 @@ package hei.school.oilcompany.controller;
 
 import hei.school.oilcompany.db.entity.GasStation;
 import hei.school.oilcompany.service.GasStationService;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/GasStations")
-@AllArgsConstructor
 public class GasStationController {
+
+    @Autowired
     GasStationService gasStationService;
 
     @GetMapping({"", "/"})
@@ -24,9 +25,10 @@ public class GasStationController {
         return gasStationService.findById(id);
     }
 
-    @GetMapping({"/ok"})
-    public String yes(){
-        return "successfuly";
-    }
+    @DeleteMapping("delete/{id}")
+    public GasStation deleteStationById(@PathVariable("id") String id) { return gasStationService.delete(id); }
+
+    @PostMapping("/saveStation")
+    public GasStation saveStaion(@RequestBody GasStation gasStation) { return gasStationService.save(gasStation); }
 
 }
