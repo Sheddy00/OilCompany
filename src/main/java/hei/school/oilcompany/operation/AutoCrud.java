@@ -117,4 +117,32 @@ public abstract class AutoCrud<D, ID> implements CrudOperation<D, ID> {
         }
     }
 
+    @Override
+    public D deleteById(ID id) {
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        String query = "DELETE FROM " + getTableName() + " WHERE id = " + id + ";";
+
+        try {
+            connection = DBConnection.getConnection();
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+            if (resultSet.next()) {
+                return mapResultSetToEntity(resultSet);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (statement != null) statement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return null;
+    }
+
 }
