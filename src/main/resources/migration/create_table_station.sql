@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS "gasStation"(
+    id SERIAL PRIMARY KEY,
+    statioName VARCHAR(200) NOT NULL,
+    location VARCHAR(200) NOT NULL
+);
