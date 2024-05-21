@@ -13,7 +13,7 @@ public class GasStationOperation extends AutoCrud<GasStation, String>{
 
     @Override
     protected String getTableName() {
-        return "gasStation";
+        return "gas_station";
     }
 
     @Override
@@ -21,7 +21,7 @@ public class GasStationOperation extends AutoCrud<GasStation, String>{
         try {
             GasStation gasStation = new GasStation();
             gasStation.setId(resultSet.getString("id"));
-            gasStation.setStationName(resultSet.getString("stationName"));
+            gasStation.setStationName(resultSet.getString("stationame"));
             gasStation.setLocation(resultSet.getString("location"));
             return gasStation;
         } catch (SQLException e) {

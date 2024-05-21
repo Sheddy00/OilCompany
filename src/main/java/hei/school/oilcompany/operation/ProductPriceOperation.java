@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class ProductPriceOperation extends AutoCrud<ProductPrice, Integer>{
     @Override
     protected String getTableName() {
-        return "productPrice";
+        return "product_price";
     }
 
     @Override
@@ -22,8 +22,8 @@ public class ProductPriceOperation extends AutoCrud<ProductPrice, Integer>{
         try {
             ProductPrice productPrice = new ProductPrice();
             productPrice.setId(resultSet.getString("id"));
-            productPrice.setUnitPrice(resultSet.getDouble("price"));
-            productPrice.setDate(LocalDateTime.from(resultSet.getDate("dateTime").toLocalDate()));
+            productPrice.setUnitPrice(resultSet.getDouble("unitprice"));
+            productPrice.setDate(resultSet.getDate("date").toLocalDate().atStartOfDay());
             return productPrice;
         } catch (SQLException e) {
             throw new RuntimeException(e);

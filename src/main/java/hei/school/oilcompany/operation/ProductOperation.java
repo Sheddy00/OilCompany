@@ -11,6 +11,7 @@ import java.sql.SQLException;
 @Repository
 @AllArgsConstructor
 public class ProductOperation extends AutoCrud<Product, Integer>{
+
     @Override
     protected String getTableName() {
         return "product";
@@ -21,8 +22,8 @@ public class ProductOperation extends AutoCrud<Product, Integer>{
         try {
             Product product = new Product();
             product.setId(resultSet.getString("id"));
-            product.setName(resultSet.getString("name"));
-            product.setPrice(resultSet.getDouble("price"));
+            product.setName(resultSet.getString("productname"));
+            product.setPrice(resultSet.getDouble("productprice"));
             return product;
         } catch (SQLException e) {
             throw new RuntimeException(e);
