@@ -145,4 +145,55 @@ public abstract class AutoCrud<D, ID> implements CrudOperation<D, ID> {
         return null;
     }
 
+    @Override
+    public D updateById(ID toUpdate) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = DBConnection.getConnection();
+
+            Class<?> toUpdateClass = toUpdate.getClass();
+            Field[] fields = toUpdateClass.getDeclaredFields();
+
+            StringBuilder queryBuilder = new StringBuilder("UPDATE " + getTableName() + " SET ");
+            for (Field field : fields) {
+                field.setAccessible(true);
+                if (!field.getName().equals("id")) {
+                    queryBuilder.append(field.getName() + " = ?, ");
+                }
+            }
+            queryBuilder.delete(queryBuilder.length() - 2, queryBuilder.length());
+
+            queryBuilder.append(" WHERE id = ?");
+
+            String updateQuery = queryBuilder.toString();
+            preparedStatement = connection.prepareStatement(updateQuery);
+
+            int parameterIndex = 1;
+            for (Field field : fields) {
+                field.setAccessible(true);
+                if (!field.getName().equals("id")) {
+                    Object value = field.get(toUpdate);
+                    preparedStatement.setObject(parameterIndex++, value);
+                }
+            }
+            preparedStatement.setObject(parameterIndex++, getById((ID) toUpdate));
+
+            preparedStatement.executeUpdate();
+            return (D) toUpdate;
+
+        } catch (SQLException | IllegalArgumentException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (preparedStatement != null) preparedStatement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
 }

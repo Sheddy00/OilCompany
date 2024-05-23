@@ -7,4 +7,5 @@ public interface CrudOperation<D, ID> {
     D getById(ID id);
     D save(D toSave);
     D deleteById(ID id);
+    D updateById(ID id);
 }
